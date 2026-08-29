@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Tech Store</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #08090b;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .phone {
+      background: #1683ff;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .search {
+      width: 100%;
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid #30343b;
+      background: #17191d;
+      color: white;
+      font-size: 16px;
+      margin-bottom: 20px;
+      outline: none;
+    }
+
+    .categories {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      margin-bottom: 25px;
+    }
+
+    .category {
+      background: #191c21;
+      border: 1px solid #30343b;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 12px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .category.active {
+      background: #1683ff;
+      border-color: #1683ff;
+    }
+
+    h1 {
+      font-size: 26px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .product {
+      background: #15171b;
+      border: 1px solid #292d34;
+      border-radius: 18px;
+      overflow: hidden;
+      padding-bottom: 15px;
+    }
+
+    .product img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      background: #202329;
+    }
+
+    .product-info {
+      padding: 12px;
+    }
+
+    .product-name {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .price {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .call {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: #1683ff;
+      color: white;
+      padding: 13px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .ai {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #1683ff;
+      border: none;
+      color: white;
+      font-size: 25px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 12px;
+      }
+
+      .products {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .product img {
+        height: 160px;
+      }
+
+      .product-name {
+        font-size: 15px;
+      }
+
+      .price {
+        font-size: 17px;
+      }
+
+      .logo {
+        font-size: 22px;
+      }
+
+      .phone {
+        padding: 9px 12px;
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div>
+      <div class="logo">Tech Store 🛍️</div>
+      <div style="color:#888;">Texnika do‘koni</div>
+    </div>
+
+    <a class="phone" href="tel:+998901234567">
+      📞 Qo‘ng‘iroq
+    </a>
+  </div>
+
+  <input
+    class="search"
+    id="search"
+    type="text"
+    placeholder="🔎 Mahsulot qidirish..."
+  >
+
+  <div class="categories">
+    <button class="category active" onclick="filterProducts('Barchasi', this)">
+      Barchasi
+    </button>
+
+    <button class="category" onclick="filterProducts('Telefon', this)">
+      📱 Telefon
+    </button>
+
+    <button class="category" onclick="filterProducts('Noutbuk', this)">
+      💻 Noutbuk
+    </button>
+
+    <button class="category" onclick="filterProducts('Televizor', this)">
+      📺 Televizor
+    </button>
+
+    <button class="category" onclick="filterProducts('Maishiy texnika', this)">
+      🏠 Maishiy texnika
+    </button>
+  </div>
+
+  <h1>🔥 Mahsulotlar</h1>
+
+  <div class="products" id="products"></div>
+
+</div>
+
+<button class="ai" onclick="openAI()">🤖</button>
+
+<script>
+
+const products = [
+
+  {
+    name: "Samsung Galaxy A55",
+    category: "Telefon",
+    price: "4 200 000 so‘m",
+    image: "https://placehold.co/600x400/202329/ffffff?text=Samsung+A55"
+  },
+
+  {
+    name: "iPhone 15",
+    category: "Telefon",
+    price: "9 500 000 so‘m",
+    image: "https://placehold.co/600x400/202329/ffffff?text=iPhone+15"
+  },
+
+  {
+    name: "MacBook Air M2 13",
+    category: "Noutbuk",
+    price: "11 490 000 so‘m",
+    image: "https://placehold.co/600x400/202329/ffffff?text=MacBook+Air+M2"
+  },
+
+  {
+    name: "LG Smart TV 43",
+    category: "Televizor",
+    price: "4 490 000 so‘m",
+    image: "https://placehold.co/600x400/202329/ffffff?text=LG+Smart+TV"
+  },
+
+  {
+    name: "Samsung Smart TV 55",
+    category: "Televizor",
+    price: "8 990 000 so‘m",
+    image: "https://placehold.co/600x400/202329/ffffff?text=Samsung+TV"
+  },
+
+  {
+    name: "Samsung Kir yuvish mashinasi",
+    category: "Maishiy texnika",
+    price: "6 490 000 so‘m",
+    image: "https://placehold.co/600x400/202329/ffffff?text=Samsung+Washer"
+  }
+
+];
+
+let currentCategory = "Barchasi";
+
+function renderProducts() {
+
+  const search = document
+    .getElementById("search")
+    .value
+    .toLowerCase();
+
+  const container = document.getElementById("products");
+
+  const filtered = products.filter(product => {
+
+    const categoryMatch =
+      currentCategory === "Barchasi" ||
+      product.category === currentCategory;
+
+    const searchMatch =
+      product.name.toLowerCase().includes(search);
+
+    return categoryMatch && searchMatch;
+  });
+
+  container.innerHTML = filtered.map(product => `
+
+    <div class="product">
+
+      <img src="${product.image}" alt="${product.name}">
+
+      <div class="product-info">
+
+        <div class="product-name">
+          ${product.name}
+        </div>
+
+        <div style="color:#ffd43b; margin-bottom:7px;">
+          ⭐ 4.9
+        </div>
+
+        <div class="price">
+          ${product.price}
+        </div>
+
+        <a
+          class="call"
+          href="tel:+998901234567"
+        >
+          📞 Qo‘ng‘iroq qilish
+        </a>
+
+      </div>
+
+    </div>
+
+  `).join("");
+
+}
+
+function filterProducts(category, button) {
+
+  currentCategory = category;
+
+  document
+    .querySelectorAll(".category")
+    .forEach(btn => btn.classList.remove("active"));
+
+  button.classList.add("active");
+
+  renderProducts();
+}
+
+document
+  .getElementById("search")
+  .addEventListener("input", renderProducts);
+
+function openAI() {
+
+  alert(
+    "🤖 AI yordamchi tez orada ishlaydi!\n\n" +
+    "Masalan:\n" +
+    "• iPhone 15 narxi qancha?\n" +
+    "• Eng yaxshi televizor qaysi?\n" +
+    "• Noutbuklar bormi?"
+  );
+
+}
+
+renderProducts();
+
+</script>
+
+</body>
+</html>
